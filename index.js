@@ -5,4 +5,6 @@ app.get("/", (req, res) => {
   res.send("Hello from Jenkins CI/CD pipeline on Azure!");
 });
 
-app.listen(8080, () => console.log("Server running on port 8080"));
+// ✅ Use process.env.PORT (required by Azure)
+const port = process.env.PORT || 8080;
+app.listen(port, () => console.log(`Server running on port ${port}`));
