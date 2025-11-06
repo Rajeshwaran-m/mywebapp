@@ -4,16 +4,20 @@ FROM node:18-alpine
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy package.json and install dependencies
+# Copy dependency files
 COPY package*.json ./
-RUN npm install
 
-# Copy the rest of your code
+# Install dependencies
+RUN npm install --production
+
+# Copy the rest of your app
 COPY . .
 
-# Expose port 8080 (the port your app listens on)
+# Azure expects the app to listen on $PORT (from environment)
+# 8080 is still okay as a fallback for local testing
 EXPOSE 8080
 
-# Start your app
+# Start the app
 CMD ["npm", "start"]
+
 
