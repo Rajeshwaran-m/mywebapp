@@ -5,7 +5,7 @@ pipeline {
         IMAGE_NAME = "mywebapp"
         ACR_NAME = "rajeshacr01"
         RESOURCE_GROUP = "cicd-rg"
-        WEBAPP_NAME = "rajeshwebapp1234"
+        WEBAPP_NAME = "mywebapp1234"
     }
 
     stages {
