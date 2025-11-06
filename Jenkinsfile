@@ -20,10 +20,14 @@ pipeline {
             }
         }
         stage('Login to ACR') {
-            steps {
-                sh 'az acr login --name $ACR_NAME'
-            }
+    steps {
+        withCredentials([usernamePassword(credentialsId: 'acr-creds', usernameVariable: 'ACR_USER', passwordVariable: 'ACR_PASS')]) {
+            sh 'docker login rajeshacr01.azurecr.io -u $ACR_USER -p $ACR_PASS'
         }
+    }
+}
+
+     
         stage('Push to ACR') {
             steps {
                 sh 'docker push $LOGIN_SERVER/$IMAGE_NAME:latest'
