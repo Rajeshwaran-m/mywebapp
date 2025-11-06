@@ -34,14 +34,17 @@ pipeline {
             }
         }
         stage('Deploy to Azure Web App') {
-            steps {
-                sh '''
-                az webapp config container set \
-                --name $APP_NAME \
-                --resource-group $RESOURCE_GROUP \
-                --docker-custom-image-name $LOGIN_SERVER/$IMAGE_NAME:latest
-                '''
-            }
+    steps {
+        withCredentials([string(credentialsId: 'azure-credentials', variable: 'AZURE_CREDENTIALS')]) {
+            sh '''
+                echo "$AZURE_CREDENTIALS" > azureauth.json
+                az login --service-principal --username $(jq -r .clientId azureauth.json) --password $(jq -r .clientSecret azureauth.json) --tenant $(jq -r .tenantId azureauth.json)
+                az account set --subscription $(jq -r .subscriptionId azureauth.json)
+                az webapp config container set --name rajeshwebapp123 --resource-group cicd-rg --container-image-name rajeshacr01.azurecr.io/mywebapp:latest
+            '''
         }
     }
 }
+
+ 
+
