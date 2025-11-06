@@ -1,7 +1,19 @@
+# Use an official Node.js image
 FROM node:18-alpine
+
+# Set the working directory inside the container
 WORKDIR /app
+
+# Copy package.json and install dependencies
+COPY package*.json ./
+RUN npm install
+
+# Copy the rest of your code
 COPY . .
-RUN npm install express
+
+# Expose port 8080 (the port your app listens on)
 EXPOSE 8080
-CMD ["node", "-e", "require(\"express\")().get(\"/\",(r,s)=>s.send(\"Hello from Jenkins on Azure!\")).
-listen(8080)"]
+
+# Start your app
+CMD ["npm", "start"]
+
